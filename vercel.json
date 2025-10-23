@@ -1,8 +1,0 @@
-{
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "SERMS/wsgi.py"
-    }
-  ]
-}

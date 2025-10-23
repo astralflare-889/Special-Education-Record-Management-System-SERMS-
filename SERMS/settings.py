@@ -128,3 +128,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import os
+
+# Add your Vercel domain to ALLOWED_HOSTS
+ALLOWED_HOSTS = ['special-education-record-management.vercel.app', 'localhost', '127.0.0.1']
+
+# For production
+DEBUG = False
+
+# Static files for Vercel
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

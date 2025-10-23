@@ -1,0 +1,85 @@
+{% extends 'student_records/base.html' %}
+
+{% block title %}Edit Student - {{ student.full_name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">Edit Student Information</h1>
+        <p style="color: #7f8c8d;">Student: <strong>{{ student.full_name }}</strong> ({{ student.admission_number }})</p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div class="form-group">
+                <label for="full_name">Full Name *</label>
+                <input type="text" id="full_name" name="full_name" class="form-control" value="{{ student.full_name }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="admission_number">Student ID</label>
+                <input type="text" class="form-control" value="{{ student.admission_number }}" disabled>
+                <small style="color: #7f8c8d;">Student ID cannot be changed</small>
+            </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div class="form-group">
+                <label for="age">Age *</label>
+                <input type="number" id="age" name="age" class="form-control" value="{{ student.age }}" min="3" max="18" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="grade">Grade Level *</label>
+                <select id="grade" name="grade" class="form-control" required>
+                    <option value="Pre-K" {% if student.grade == "Pre-K" %}selected{% endif %}>Pre-K</option>
+                    <option value="Kindergarten" {% if student.grade == "Kindergarten" %}selected{% endif %}>Kindergarten</option>
+                    <option value="1st Grade" {% if student.grade == "1st Grade" %}selected{% endif %}>1st Grade</option>
+                    <option value="2nd Grade" {% if student.grade == "2nd Grade" %}selected{% endif %}>2nd Grade</option>
+                    <option value="3rd Grade" {% if student.grade == "3rd Grade" %}selected{% endif %}>3rd Grade</option>
+                    <option value="4th Grade" {% if student.grade == "4th Grade" %}selected{% endif %}>4th Grade</option>
+                    <option value="5th Grade" {% if student.grade == "5th Grade" %}selected{% endif %}>5th Grade</option>
+                </select>
+            </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div class="form-group">
+                <label for="parent_name">Parent/Guardian Name *</label>
+                <input type="text" id="parent_name" name="parent_name" class="form-control" value="{{ student.parent_name }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="parent_contact">Parent Contact *</label>
+                <input type="tel" id="parent_contact" name="parent_contact" class="form-control" value="{{ student.parent_contact }}" required>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="special_needs">Special Education Needs *</label>
+            <textarea id="special_needs" name="special_needs" class="form-control" rows="4" required>{{ student.special_needs }}</textarea>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+            <button type="submit" class="btn btn-success" style="padding: 1rem 2rem;">
+                Update Student
+            </button>
+            <a href="{% url 'student_detail' student.id %}" class="btn" style="background: #95a5a6; color: white; padding: 1rem 2rem;">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<div class="card" style="background: #fff3cd;">
+    <h3 style="color: #856404; margin-bottom: 1rem;">⚠️ Update Guidelines</h3>
+    <ul style="line-height: 1.6; color: #856404;">
+        <li>Only update information when there are actual changes</li>
+        <li>Verify parent contact information before saving</li>
+        <li>Document any significant changes in special needs</li>
+        <li>Student ID cannot be modified for record integrity</li>
+    </ul>
+</div>
+{% endblock %}

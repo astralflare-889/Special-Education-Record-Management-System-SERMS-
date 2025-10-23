@@ -1,0 +1,93 @@
+{% extends 'student_records/base.html' %}
+
+{% block title %}Create Case Conference - {{ student.full_name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">Create Case Conference</h1>
+        <p style="color: #7f8c8d;">Student: <strong>{{ student.full_name }}</strong> ({{ student.admission_number }})</p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+            <div class="form-group">
+                <label for="conference_date">Conference Date</label>
+                <input type="date" id="conference_date" name="conference_date" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="parent_attended">Parent Attendance</label>
+                <div style="display: flex; align-items: center; margin-top: 0.5rem;">
+                    <input type="checkbox" id="parent_attended" name="parent_attended" style="margin-right: 0.5rem;">
+                    <label for="parent_attended" style="margin: 0;">Parent/Guardian attended the conference</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="progress_notes">Progress Notes</label>
+            <textarea id="progress_notes" name="progress_notes" class="form-control" rows="4" 
+                      placeholder="Document the student's current progress, observations, and performance..." required></textarea>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div class="form-group">
+                <label for="goals_met">Goals Met</label>
+                <textarea id="goals_met" name="goals_met" class="form-control" rows="4" 
+                          placeholder="List the goals that have been successfully achieved..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="new_goals">New Goals</label>
+                <textarea id="new_goals" name="new_goals" class="form-control" rows="4" 
+                          placeholder="Outline new goals and objectives for the student..." required></textarea>
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+            <button type="submit" class="btn btn-success" style="padding: 1rem 2rem;">
+                Create Conference Record
+            </button>
+            <a href="{% url 'student_detail' student.id %}" class="btn" style="background: #95a5a6; color: white; padding: 1rem 2rem;">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<div class="card" style="background: #f8f9fa;">
+    <h3 style="color: #2c3e50; margin-bottom: 1rem;">Conference Guidelines</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem;">
+        <div>
+            <h4 style="color: #3498db;">Progress Notes</h4>
+            <ul style="line-height: 1.6; color: #555;">
+                <li>Current skill levels</li>
+                <li>Behavioral observations</li>
+                <li>Academic performance</li>
+                <li>Social interactions</li>
+            </ul>
+        </div>
+        <div>
+            <h4 style="color: #27ae60;">Goals Met</h4>
+            <ul style="line-height: 1.6; color: #555;">
+                <li>Completed objectives</li>
+                <li>Mastered skills</li>
+                <li>Behavioral improvements</li>
+                <li>Milestone achievements</li>
+            </ul>
+        </div>
+        <div>
+            <h4 style="color: #e67e22;">New Goals</h4>
+            <ul style="line-height: 1.6; color: #555;">
+                <li>Next learning targets</li>
+                <li>Skill development areas</li>
+                <li>Behavioral objectives</li>
+                <li>Timeline expectations</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

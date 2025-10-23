@@ -1,0 +1,124 @@
+{% extends 'student_records/base.html' %}
+
+{% block title %}Manage All Students - Admin{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h1 class="card-title">👥 All Students Management</h1>
+            <p style="color: #7f8c8d;">Administrator view of all students in the system</p>
+        </div>
+        <a href="{% url 'admin_add_student' %}" class="btn" style="background: linear-gradient(135deg, #55efc4, #00b894); color: white; padding: 1rem 2rem; border-radius: 25px; text-decoration: none;">
+            ➕ Add New Student
+        </a>
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card" style="background: linear-gradient(135deg, #74b9ff, #0984e3);">
+            <div class="stat-number" style="color: white;">{{ students.count }}</div>
+            <div class="stat-label" style="color: white;">Total Students</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #fd79a8, #e84393);">
+            <div class="stat-number" style="color: white;">
+                {% for student in students %}{% if student.has_special_needs %}1{% else %}0{% endif %}{% endfor %}
+            </div>
+            <div class="stat-label" style="color: white;">Special Needs</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #55efc4, #00b894);">
+            <div class="stat-number" style="color: white;">
+                {% for student in students %}{% if student.assigned_teacher %}1{% else %}0{% endif %}{% endfor %}
+            </div>
+            <div class="stat-label" style="color: white;">Assigned</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">📋 Complete Student Database</h2>
+    </div>
+    
+    {% if students %}
+        <div style="overflow-x: auto;">
+            <table class="table" style="border-collapse: separate; border-spacing: 0; border-radius: 15px; overflow: hidden;">
+                <thead>
+                    <tr style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;">
+                        <th style="padding: 1.5rem; text-align: center;">👤 Student Name</th>
+                        <th style="padding: 1.5rem; text-align: center;">🆔 Student ID</th>
+                        <th style="padding: 1.5rem; text-align: center;">🎂 Age</th>
+                        <th style="padding: 1.5rem; text-align: center;">📚 Grade</th>
+                        <th style="padding: 1.5rem; text-align: center;">🏥 Special Needs</th>
+                        <th style="padding: 1.5rem; text-align: center;">👩🏫 Teacher</th>
+                        <th style="padding: 1.5rem; text-align: center;">👨👩👧👦 Parent</th>
+                        <th style="padding: 1.5rem; text-align: center;">📅 Added</th>
+                        <th style="padding: 1.5rem; text-align: center;">⚡ Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr style="background: {% cycle '#f8f9ff' '#ffffff' %};">
+                        <td style="padding: 1.5rem; text-align: center;">
+                            <strong style="color: #2d3436;">{{ student.full_name }}</strong>
+                        </td>
+                        <td style="padding: 1.5rem; text-align: center;">
+                            <span style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold;">
+                                #{{ student.admission_number }}
+                            </span>
+                        </td>
+                        <td style="padding: 1.5rem; text-align: center;">{{ student.age }} years</td>
+                        <td style="padding: 1.5rem; text-align: center;">
+                            <span style="background: #ddd6fe; color: #5b21b6; padding: 0.4rem 0.8rem; border-radius: 15px;">
+                                {{ student.grade }}
+                            </span>
+                        </td>
+                        <td style="padding: 1.5rem; text-align: center;">
+                            {% if student.has_special_needs %}
+                                <span style="background: #fecaca; color: #dc2626; padding: 0.4rem 0.8rem; border-radius: 15px; font-weight: 600;">
+                                    ✓ YES
+                                </span>
+                            {% else %}
+                                <span style="background: #d1fae5; color: #059669; padding: 0.4rem 0.8rem; border-radius: 15px; font-weight: 600;">
+                                    ✗ NO
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 1.5rem; text-align: center;">
+                            {% if student.assigned_teacher %}
+                                <strong style="color: #3498db;">{{ student.assigned_teacher }}</strong>
+                            {% else %}
+                                <span style="color: #e74c3c;">Not Assigned</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 1.5rem; text-align: center;">
+                            <strong>{{ student.parent_name }}</strong><br>
+                            <small style="color: #7f8c8d;">{{ student.parent_contact }}</small>
+                        </td>
+                        <td style="padding: 1.5rem; text-align: center;">
+                            <small style="color: #7f8c8d;">{{ student.date_added|date:"M d, Y" }}</small>
+                        </td>
+                        <td style="padding: 1.5rem;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                <a href="{% url 'student_detail' student.id %}" 
+                                   style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; padding: 0.6rem; border-radius: 10px; text-decoration: none; text-align: center; font-size: 0.85rem;">
+                                    👁️ View
+                                </a>
+                                <a href="/admin/student_records/student/{{ student.id }}/change/" 
+                                   style="background: linear-gradient(135deg, #fdcb6e, #e17055); color: white; padding: 0.6rem; border-radius: 10px; text-decoration: none; text-align: center; font-size: 0.85rem;">
+                                    ✏️ Edit
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 4rem;">
+            <h3 style="color: #7f8c8d;">No Students Found</h3>
+            <p style="color: #7f8c8d;">Start by adding students to the system.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

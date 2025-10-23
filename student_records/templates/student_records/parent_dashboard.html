@@ -1,0 +1,114 @@
+{% extends 'student_records/base.html' %}
+
+{% block title %}Parent Dashboard - SERMS{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">👨👩👧👦 Parent Portal</h1>
+        <p style="color: #7f8c8d;">Welcome, {{ user.first_name }} {{ user.last_name }}</p>
+    </div>
+    
+    <!-- Search for your children -->
+    <div style="background: #e8f5e8; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem;">
+        <h3 style="color: #27ae60; margin-bottom: 1rem;">🔍 Search for Your Child</h3>
+        <form method="get" style="display: flex; gap: 1rem;">
+            <input type="text" name="search" value="{{ search_query }}" 
+                   placeholder="Enter your child's name or student ID..." 
+                   style="flex: 1; padding: 0.8rem; border: 2px solid #27ae60; border-radius: 5px;">
+            <button type="submit" style="padding: 0.8rem 1.5rem; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Search
+            </button>
+        </form>
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">{{ students.count }}</div>
+            <div class="stat-label">Your Children</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ recent_conferences.count }}</div>
+            <div class="stat-label">Recent Updates</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ students.count }}</div>
+            <div class="stat-label">Active Programs</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Your Children's Information</h2>
+    </div>
+    
+    {% if students %}
+        <div style="display: grid; gap: 1.5rem;">
+            {% for student in students %}
+            <div style="border: 2px solid #27ae60; border-radius: 15px; padding: 2rem; background: #f8fff8;">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem;">
+                    <div>
+                        <h3 style="color: #27ae60; font-size: 1.5rem; margin-bottom: 0.5rem;">{{ student.full_name }}</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem;">
+                            <p style="color: #7f8c8d;"><strong>Student ID:</strong> <span style="color: #27ae60; font-weight: bold;">{{ student.admission_number }}</span></p>
+                            <p style="color: #7f8c8d;"><strong>Age:</strong> {{ student.age }} years | <strong>Grade:</strong> {{ student.grade }}</p>
+                        </div>
+                    </div>
+                    <a href="{% url 'student_detail' student.id %}" class="btn btn-success" style="background: #27ae60;">
+                        View Full Details
+                    </a>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">👩🏫 Assigned Teacher:</h4>
+                        <p style="font-size: 1.1rem;">{{ student.assigned_teacher|default:"Not assigned yet" }}</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #2c3e50; margin-bottom: 0.5rem;">📋 Special Education Focus:</h4>
+                        <p style="line-height: 1.5;">{{ student.special_needs|truncatewords:15 }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 3rem; color: #7f8c8d;">
+            {% if search_query %}
+                <h3>No children found matching "{{ search_query }}"</h3>
+                <p>Please check the spelling or try searching with a different term.</p>
+                <a href="{% url 'parent_dashboard' %}" style="color: #27ae60; text-decoration: none;">← Clear search</a>
+            {% else %}
+                <h3>No Children Found</h3>
+                <p>Contact the school administration if you believe this is an error.</p>
+                <p style="margin-top: 1rem; color: #27ae60;">📞 School Office: (555) 123-4567</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+{% if recent_conferences %}
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">📊 Recent Progress Updates</h2>
+    </div>
+    
+    <div style="display: grid; gap: 1rem;">
+        {% for conference in recent_conferences %}
+        <div style="border-left: 4px solid #27ae60; padding: 1rem; background: #f8fff8;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h4 style="color: #2c3e50;">{{ conference.student.full_name }}</h4>
+                    <p style="color: #7f8c8d;">Conference Date: {{ conference.conference_date|date:"F d, Y" }}</p>
+                </div>
+                <a href="{% url 'student_detail' conference.student.id %}" class="btn" style="background: #27ae60; color: white;">
+                    View Details
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'student_records/base.html' %}
+
+{% block title %}Teacher Dashboard - SERMS{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">👩🏫 Teacher Dashboard</h1>
+        <p style="color: #7f8c8d;">Welcome back, {{ user.first_name }} {{ user.last_name }}</p>
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card" style="background: linear-gradient(135deg, #74b9ff, #0984e3);">
+            <div class="stat-number" style="color: white;">{{ students.count }}</div>
+            <div class="stat-label" style="color: white;">Assigned Students</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #fd79a8, #e84393);">
+            <div class="stat-number" style="color: white;">{{ recent_conferences.count }}</div>
+            <div class="stat-label" style="color: white;">Recent Conferences</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #55efc4, #00b894);">
+            <div class="stat-number" style="color: white;">{{ students.count }}</div>
+            <div class="stat-label" style="color: white;">Active Cases</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 class="card-title">📚 My Students</h2>
+        <a href="{% url 'add_student' %}" class="btn" style="background: linear-gradient(135deg, #a29bfe, #6c5ce7); color: white; padding: 1rem 2rem; border-radius: 25px; text-decoration: none; box-shadow: 0 8px 15px rgba(108,92,231,0.3);">
+            ➕ Add New Student
+        </a>
+    </div>
+    
+    {% if students %}
+        <div style="overflow-x: auto;">
+            <table class="table" style="border-collapse: separate; border-spacing: 0; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                <thead>
+                    <tr style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;">
+                        <th style="padding: 1.5rem; text-align: center; font-weight: bold;">👤 Student Name</th>
+                        <th style="padding: 1.5rem; text-align: center; font-weight: bold;">🆔 Student ID</th>
+                        <th style="padding: 1.5rem; text-align: center; font-weight: bold;">🎂 Age</th>
+                        <th style="padding: 1.5rem; text-align: center; font-weight: bold;">📚 Grade</th>
+                        <th style="padding: 1.5rem; text-align: center; font-weight: bold;">🏥 Special Needs</th>
+                        <th style="padding: 1.5rem; text-align: center; font-weight: bold;">👨👩👧👦 Parent Contact</th>
+                        <th style="padding: 1.5rem; text-align: center; font-weight: bold;">⚡ Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr style="background: {% cycle '#f8f9ff' '#ffffff' %}; transition: all 0.3s ease;" onmouseover="this.style.background='#e8f4fd'" onmouseout="this.style.background='{% cycle '#f8f9ff' '#ffffff' %}'">
+                        <td style="padding: 1.5rem; text-align: center;">
+                            <strong style="color: #2d3436; font-size: 1.1rem;">{{ student.full_name }}</strong>
+                        </td>
+                        <td style="padding: 1.5rem; text-align: center;">
+                            <span style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold; font-size: 1rem;">
+                                {{ student.admission_number }}
+                            </span>
+                        </td>
+                        <td style="padding: 1.5rem; text-align: center;">
+                            <span style="color: #636e72; font-weight: 600;">{{ student.age }} years</span>
+                        </td>
+                        <td style="padding: 1.5rem; text-align: center;">
+                            <span style="background: #ddd6fe; color: #5b21b6; padding: 0.4rem 0.8rem; border-radius: 15px; font-weight: 600;">
+                                {{ student.grade }}
+                            </span>
+                        </td>
+                        <td style="padding: 1.5rem; text-align: center;">
+                            {% if student.special_needs and student.special_needs != 'No special needs' %}
+                                <span style="background: #fecaca; color: #dc2626; padding: 0.4rem 0.8rem; border-radius: 15px; font-weight: 600;">
+                                    ✓ YES
+                                </span>
+                            {% else %}
+                                <span style="background: #d1fae5; color: #059669; padding: 0.4rem 0.8rem; border-radius: 15px; font-weight: 600;">
+                                    ✗ NO
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 1.5rem; text-align: center;">
+                            <div style="text-align: center;">
+                                <strong style="color: #2d3436;">{{ student.parent_name }}</strong><br>
+                                <span style="color: #636e72; font-size: 0.9rem;">📞 {{ student.parent_contact }}</span>
+                            </div>
+                        </td>
+                        <td style="padding: 1.5rem;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                <a href="{% url 'student_detail' student.id %}" 
+                                   style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; padding: 0.6rem; border-radius: 10px; text-decoration: none; text-align: center; font-size: 0.85rem; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 8px rgba(116,185,255,0.3);"
+                                   onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(116,185,255,0.4)'"
+                                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 8px rgba(116,185,255,0.3)'">
+                                    👁️ View
+                                </a>
+                                <a href="{% url 'edit_student' student.id %}" 
+                                   style="background: linear-gradient(135deg, #fdcb6e, #e17055); color: white; padding: 0.6rem; border-radius: 10px; text-decoration: none; text-align: center; font-size: 0.85rem; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 8px rgba(253,203,110,0.3);"
+                                   onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(253,203,110,0.4)'"
+                                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 8px rgba(253,203,110,0.3)'">
+                                    ✏️ Edit
+                                </a>
+                                <a href="{% url 'create_conference' student.id %}" 
+                                   style="background: linear-gradient(135deg, #55efc4, #00b894); color: white; padding: 0.6rem; border-radius: 10px; text-decoration: none; text-align: center; font-size: 0.85rem; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 8px rgba(85,239,196,0.3);"
+                                   onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(85,239,196,0.4)'"
+                                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 8px rgba(85,239,196,0.3)'">
+                                    📝 Conference
+                                </a>
+                                <a href="{% url 'generate_report' student.id %}" 
+                                   style="background: linear-gradient(135deg, #fd79a8, #e84393); color: white; padding: 0.6rem; border-radius: 10px; text-decoration: none; text-align: center; font-size: 0.85rem; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 8px rgba(253,121,168,0.3);"
+                                   onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 12px rgba(253,121,168,0.4)'"
+                                   onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 8px rgba(253,121,168,0.3)'">
+                                    📊 Report
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 4rem; background: linear-gradient(135deg, #ffecd2, #fcb69f); border-radius: 15px;">
+            <h3 style="color: #d63031; margin-bottom: 1rem;">📚 No Students Assigned</h3>
+            <p style="color: #636e72; margin-bottom: 2rem;">Contact your administrator to get students assigned to your caseload.</p>
+            <a href="{% url 'add_student' %}" class="btn" style="background: linear-gradient(135deg, #a29bfe, #6c5ce7); color: white; padding: 1rem 2rem; border-radius: 25px; text-decoration: none;">
+                ➕ Add Your First Student
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

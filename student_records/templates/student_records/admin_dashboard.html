@@ -1,0 +1,128 @@
+{% extends 'student_records/base.html' %}
+
+{% block title %}Administrator Dashboard - SERMS{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">🔐 Administrator Dashboard</h1>
+        <p style="color: #7f8c8d;">Complete system control and management</p>
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card" style="border-left: 4px solid #3498db;">
+            <div class="stat-number">{{ total_students }}</div>
+            <div class="stat-label">Total Students</div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #e74c3c;">
+            <div class="stat-number">{{ total_teachers }}</div>
+            <div class="stat-label">Active Teachers</div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #27ae60;">
+            <div class="stat-number">{{ total_parents }}</div>
+            <div class="stat-label">Registered Parents</div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #f39c12;">
+            <div class="stat-number">{{ total_conferences }}</div>
+            <div class="stat-label">Total Conferences</div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #e74c3c;">
+            <div class="stat-number">{{ total_admins }}/2</div>
+            <div class="stat-label">System Administrators</div>
+        </div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">🎛️ System Management</h2>
+        </div>
+        
+        <div style="display: grid; gap: 1rem;">
+            <a href="{% url 'manage_students' %}" class="btn" style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white; text-decoration: none; text-align: center; padding: 1rem; border-radius: 10px; margin-bottom: 0.5rem;">
+                👥 View All Students
+            </a>
+            <a href="{% url 'admin_add_student' %}" class="btn" style="background: linear-gradient(135deg, #55efc4, #00b894); color: white; text-decoration: none; text-align: center; padding: 1rem; border-radius: 10px; margin-bottom: 0.5rem;">
+                ➕ Add New Student
+            </a>
+            <a href="{% url 'assign_teachers' %}" class="btn" style="background: linear-gradient(135deg, #a29bfe, #6c5ce7); color: white; text-decoration: none; text-align: center; padding: 1rem; border-radius: 10px; margin-bottom: 0.5rem;">
+                🔄 Assign Teachers
+            </a>
+            <a href="{% url 'manage_teachers' %}" class="btn" style="background: linear-gradient(135deg, #fd79a8, #e84393); color: white; text-decoration: none; text-align: center; padding: 1rem; border-radius: 10px; margin-bottom: 0.5rem;">
+                👩🏫 Manage Teachers
+            </a>
+            <a href="{% url 'manage_parents' %}" class="btn" style="background: linear-gradient(135deg, #fdcb6e, #e17055); color: white; text-decoration: none; text-align: center; padding: 1rem; border-radius: 10px; margin-bottom: 0.5rem;">
+                👨👩👧👦 Manage Parents
+            </a>
+            <a href="{% url 'system_reports' %}" class="btn" style="background: linear-gradient(135deg, #00cec9, #00b894); color: white; text-decoration: none; text-align: center; padding: 1rem; border-radius: 10px; margin-bottom: 0.5rem;">
+                📊 System Reports
+            </a>
+            <a href="/admin/" class="btn" style="background: linear-gradient(135deg, #636e72, #2d3436); color: white; text-decoration: none; text-align: center; padding: 1rem; border-radius: 10px;">
+                ⚙️ Django Admin Panel
+            </a>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">📊 System Overview</h2>
+        </div>
+        
+        <div style="color: #555; line-height: 1.8;">
+            <p><strong>System Status:</strong> <span style="color: #27ae60;">✓ Online</span></p>
+            <p><strong>Database:</strong> <span style="color: #27ae60;">✓ Connected</span></p>
+            <p><strong>Last Backup:</strong> <span style="color: #7f8c8d;">Today</span></p>
+            <p><strong>Active Sessions:</strong> <span style="color: #3498db;">{{ total_teachers|add:total_parents|add:1 }}</span></p>
+        </div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">📝 Recent Students Added</h2>
+        </div>
+        
+        {% if recent_students %}
+            <div style="display: grid; gap: 1rem;">
+                {% for student in recent_students %}
+                <div style="border-left: 3px solid #3498db; padding: 1rem; background: #f8f9fa;">
+                    <h4 style="color: #2c3e50;">{{ student.full_name }}</h4>
+                    <p style="color: #7f8c8d; font-size: 0.9rem;">
+                        ID: {{ student.admission_number }} | 
+                        Teacher: {{ student.assigned_teacher|default:"Unassigned" }} |
+                        Added: {{ student.date_added|date:"M d" }}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="color: #7f8c8d; text-align: center; padding: 2rem;">No recent students</p>
+        {% endif %}
+    </div>
+    
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">📋 Recent Conferences</h2>
+        </div>
+        
+        {% if recent_conferences %}
+            <div style="display: grid; gap: 1rem;">
+                {% for conference in recent_conferences %}
+                <div style="border-left: 3px solid #f39c12; padding: 1rem; background: #f8f9fa;">
+                    <h4 style="color: #2c3e50;">{{ conference.student.full_name }}</h4>
+                    <p style="color: #7f8c8d; font-size: 0.9rem;">
+                        Teacher: {{ conference.teacher }} | 
+                        Date: {{ conference.conference_date|date:"M d" }} |
+                        Parent: {{ conference.parent_attended|yesno:"Attended,Absent" }}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="color: #7f8c8d; text-align: center; padding: 2rem;">No recent conferences</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

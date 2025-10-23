@@ -1,0 +1,132 @@
+{% extends 'student_records/base.html' %}
+
+{% block title %}Student Report - {{ student.full_name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header" style="text-align: center; border-bottom: 3px solid #3498db;">
+        <h1 style="color: #2c3e50; margin-bottom: 0.5rem;">📊 STUDENT PROGRESS REPORT</h1>
+        <h2 style="color: #3498db;">{{ student.full_name }}</h2>
+        <p style="color: #7f8c8d;">Student ID: {{ student.admission_number }} | Generated: {% now "F d, Y" %}</p>
+    </div>
+    
+    <!-- Student Information Summary -->
+    <div style="background: #f8f9fa; padding: 2rem; border-radius: 10px; margin-bottom: 2rem;">
+        <h3 style="color: #2c3e50; margin-bottom: 1rem;">👤 Student Information</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem;">
+            <div>
+                <p><strong>Age:</strong> {{ student.age }} years</p>
+                <p><strong>Grade:</strong> {{ student.grade }}</p>
+            </div>
+            <div>
+                <p><strong>Parent/Guardian:</strong> {{ student.parent_name }}</p>
+                <p><strong>Contact:</strong> {{ student.parent_contact }}</p>
+            </div>
+            <div>
+                <p><strong>Assigned Teacher:</strong> {{ teacher }}</p>
+                <p><strong>Date Added:</strong> {{ student.date_added|date:"F d, Y" }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Special Education Needs -->
+    <div style="background: #e8f4fd; padding: 2rem; border-radius: 10px; margin-bottom: 2rem; border-left: 5px solid #3498db;">
+        <h3 style="color: #2c3e50; margin-bottom: 1rem;">🎯 Special Education Focus Areas</h3>
+        <p style="line-height: 1.8; font-size: 1.1rem;">{{ student.special_needs }}</p>
+    </div>
+    
+    <!-- Conference Summary -->
+    <div style="background: #fff; border: 2px solid #ecf0f1; border-radius: 10px; padding: 2rem; margin-bottom: 2rem;">
+        <h3 style="color: #2c3e50; margin-bottom: 1rem;">📋 Case Conference Summary</h3>
+        
+        {% if conferences %}
+            <div style="display: grid; gap: 1rem; margin-bottom: 2rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; text-align: center;">
+                    <div style="background: #e8f5e8; padding: 1rem; border-radius: 8px;">
+                        <h4 style="color: #27ae60;">{{ conferences.count }}</h4>
+                        <p style="color: #7f8c8d;">Total Conferences</p>
+                    </div>
+                    <div style="background: #fff3cd; padding: 1rem; border-radius: 8px;">
+                        <h4 style="color: #856404;">{{ conferences|length }}</h4>
+                        <p style="color: #7f8c8d;">Progress Reviews</p>
+                    </div>
+                    <div style="background: #f8d7da; padding: 1rem; border-radius: 8px;">
+                        <h4 style="color: #721c24;">
+                            {% for conf in conferences %}
+                                {% if conf.parent_attended %}1{% else %}0{% endif %}
+                            {% endfor %}
+                        </h4>
+                        <p style="color: #7f8c8d;">Parent Participation</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Detailed Conference Records -->
+            {% for conference in conferences %}
+            <div style="border: 1px solid #ecf0f1; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; background: #fafafa;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #ecf0f1; padding-bottom: 1rem;">
+                    <h4 style="color: #2c3e50;">Conference #{{ forloop.counter }}</h4>
+                    <div style="text-align: right;">
+                        <p style="color: #3498db; font-weight: bold;">{{ conference.conference_date|date:"F d, Y" }}</p>
+                        {% if conference.parent_attended %}
+                            <span style="background: #d4edda; color: #155724; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.9rem;">
+                                ✓ Parent Attended
+                            </span>
+                        {% else %}
+                            <span style="background: #f8d7da; color: #721c24; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.9rem;">
+                                ✗ Parent Absent
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem;">
+                    <div>
+                        <h5 style="color: #3498db; margin-bottom: 0.5rem;">📝 Progress Notes</h5>
+                        <p style="line-height: 1.6; background: white; padding: 1rem; border-radius: 5px;">{{ conference.progress_notes }}</p>
+                    </div>
+                    <div>
+                        <h5 style="color: #27ae60; margin-bottom: 0.5rem;">✅ Goals Achieved</h5>
+                        <p style="line-height: 1.6; background: white; padding: 1rem; border-radius: 5px;">{{ conference.goals_met }}</p>
+                    </div>
+                    <div>
+                        <h5 style="color: #e67e22; margin-bottom: 0.5rem;">🎯 New Objectives</h5>
+                        <p style="line-height: 1.6; background: white; padding: 1rem; border-radius: 5px;">{{ conference.new_goals }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div style="text-align: center; padding: 3rem; color: #7f8c8d;">
+                <h4>No Case Conferences Recorded</h4>
+                <p>This student has not had any documented case conferences yet.</p>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Report Footer -->
+    <div style="background: #2c3e50; color: white; padding: 1.5rem; border-radius: 10px; text-align: center;">
+        <p><strong>Report Generated By:</strong> {{ teacher }} | <strong>Date:</strong> {% now "F d, Y g:i A" %}</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">
+            Special Education Record Management System (SERMS) - Confidential Document
+        </p>
+    </div>
+</div>
+
+<div style="text-align: center; margin-top: 2rem;">
+    <a href="{% url 'student_detail' student.id %}" class="btn btn-primary" style="margin-right: 1rem;">
+        ← Back to Student Details
+    </a>
+    <button onclick="window.print()" class="btn" style="background: #27ae60; color: white;">
+        🖨️ Print Report
+    </button>
+</div>
+
+<style>
+@media print {
+    .btn, nav, .header { display: none !important; }
+    body { background: white !important; }
+    .card { box-shadow: none !important; border: 1px solid #ccc !important; }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERMS - Special Education Record Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%), 
+                        radial-gradient(circle at 20% 80%, #120078 0%, transparent 50%), 
+                        radial-gradient(circle at 80% 20%, #ff6b6b 0%, transparent 50%), 
+                        radial-gradient(circle at 40% 40%, #4ecdc4 0%, transparent 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: backgroundShift 10s ease-in-out infinite alternate;
+        }
+        
+        @keyframes backgroundShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 3rem;
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 550px;
+            width: 90%;
+            border: 2px solid #667eea;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,105,180,0.1), transparent);
+            animation: sparkle 3s linear infinite;
+        }
+        
+        @keyframes sparkle {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff69b4, #87ceeb, #98fb98);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subtitle {
+            color: #4a4a4a;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .user-options {
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .login-btn {
+            padding: 1.2rem 2rem;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .login-btn:hover::before {
+            left: 100%;
+        }
+        
+        .admin-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: 2px solid #ff4757;
+        }
+        
+        .admin-btn:hover {
+            background: linear-gradient(135deg, #ee5a52, #ff4757);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(255,75,87,0.3);
+        }
+        
+        .teacher-btn {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: white;
+            border: 2px solid #26d0ce;
+        }
+        
+        .teacher-btn:hover {
+            background: linear-gradient(135deg, #44a08d, #26d0ce);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(38,208,206,0.3);
+        }
+        
+        .parent-btn {
+            background: linear-gradient(135deg, #a8e6cf, #7fcdcd);
+            color: white;
+            border: 2px solid #88d8c0;
+        }
+        
+        .parent-btn:hover {
+            background: linear-gradient(135deg, #7fcdcd, #88d8c0);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(136,216,192,0.3);
+        }
+        
+        .features {
+            text-align: left;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 3px solid #ffd1dc;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .features h3 {
+            color: #ff69b4;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+        
+        .features ul {
+            list-style: none;
+            color: #555;
+        }
+        
+        .features li {
+            padding: 0.4rem 0;
+            font-size: 1rem;
+        }
+        
+        .features li:before {
+            content: "🌟 ";
+            margin-right: 0.5rem;
+        }
+        
+        .decorative-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            color: #ffd700;
+            animation: twinkle 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        .star:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .star:nth-child(2) { top: 20%; right: 15%; animation-delay: 0.5s; }
+        .star:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 1s; }
+        .star:nth-child(4) { bottom: 15%; right: 10%; animation-delay: 1.5s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="decorative-elements">
+            <div class="star">⭐</div>
+            <div class="star">🌟</div>
+            <div class="star">✨</div>
+            <div class="star">💫</div>
+        </div>
+        
+        <div class="logo">SERMS</div>
+        <div class="subtitle">🎓 Special Education Record Management System 🎓</div>
+        
+        <div class="user-options">
+            <h3 style="color: #2c3e50; margin-bottom: 1.5rem; text-align: center;">👤 Administrator Access</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+                <a href="{% url 'admin_login' %}" class="login-btn admin-btn">
+                    🔑 Admin Login
+                </a>
+                <a href="{% url 'admin_signup' %}" class="login-btn" style="background: linear-gradient(135deg, #e74c3c, #c0392b); color: white;">
+                    📝 Admin Sign Up
+                </a>
+            </div>
+            
+            <h3 style="color: #2c3e50; margin-bottom: 1.5rem; text-align: center;">👩🏫 Teacher Access</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+                <a href="{% url 'teacher_login' %}" class="login-btn teacher-btn">
+                    🔑 Teacher Login
+                </a>
+                <a href="{% url 'teacher_signup' %}" class="login-btn" style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white;">
+                    📝 Teacher Sign Up
+                </a>
+            </div>
+            
+            <h3 style="color: #2c3e50; margin-bottom: 1.5rem; text-align: center;">👨👩👧👦 Parent Access</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <a href="{% url 'parent_login' %}" class="login-btn parent-btn">
+                    🔑 Parent Login
+                </a>
+                <a href="{% url 'parent_signup' %}" class="login-btn" style="background: linear-gradient(135deg, #55efc4, #00b894); color: white;">
+                    📝 Parent Sign Up
+                </a>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h3>⭐ System Features ⭐</h3>
+            <ul>
+                <li>Digital student record management</li>
+                <li>Case conference documentation</li>
+                <li>Progress tracking and reports</li>
+                <li>Parent-teacher communication</li>
+                <li>Secure data management</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

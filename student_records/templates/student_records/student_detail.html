@@ -1,0 +1,124 @@
+{% extends 'student_records/base.html' %}
+
+{% block title %}{{ student.full_name }} - Student Details{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h1 class="card-title">{{ student.full_name }}</h1>
+            <div style="background: #e8f4fd; padding: 0.5rem 1rem; border-radius: 5px; display: inline-block; margin-top: 0.5rem;">
+                <strong style="color: #2c3e50;">Student ID:</strong> 
+                <span style="color: #3498db; font-weight: bold; font-size: 1.1rem;">{{ student.admission_number }}</span>
+            </div>
+        </div>
+        {% if user.teacher and student.assigned_teacher == user.teacher %}
+            <a href="{% url 'edit_student' student.id %}" class="btn" style="background: #f39c12; color: white; margin-right: 1rem;">
+                Edit Student Info
+            </a>
+            <a href="{% url 'create_conference' student.id %}" class="btn btn-success">
+                Create New Conference
+            </a>
+        {% endif %}
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+        <div>
+            <h3 style="color: #2c3e50; margin-bottom: 1rem;">Student Information</h3>
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                <p><strong>Age:</strong> {{ student.age }} years old</p>
+                <p><strong>Grade:</strong> {{ student.grade }}</p>
+                <p><strong>Date Added:</strong> {{ student.date_added|date:"F d, Y" }}</p>
+                <p><strong>Assigned Teacher:</strong> {{ student.assigned_teacher|default:"Not assigned" }}</p>
+            </div>
+        </div>
+        
+        <div>
+            <h3 style="color: #2c3e50; margin-bottom: 1rem;">Parent/Guardian</h3>
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                <p><strong>Name:</strong> {{ student.parent_name }}</p>
+                <p><strong>Contact:</strong> {{ student.parent_contact }}</p>
+                {% if student.parent %}
+                    <p><strong>Portal Access:</strong> <span style="color: #27ae60;">✓ Active</span></p>
+                {% else %}
+                    <p><strong>Portal Access:</strong> <span style="color: #e74c3c;">Not Set Up</span></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div>
+        <h3 style="color: #2c3e50; margin-bottom: 1rem;">Special Education Needs</h3>
+        <div style="background: #e8f4fd; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #3498db;">
+            <p style="line-height: 1.6;">{{ student.special_needs|default:"No specific needs documented yet." }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Case Conference History</h2>
+    </div>
+    
+    {% if conferences %}
+        <div style="display: grid; gap: 1.5rem;">
+            {% for conference in conferences %}
+            <div style="border: 2px solid #ecf0f1; border-radius: 10px; padding: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                    <div>
+                        <h4 style="color: #2c3e50;">Conference - {{ conference.conference_date|date:"F d, Y" }}</h4>
+                        <p style="color: #7f8c8d;">Conducted by: {{ conference.teacher }}</p>
+                    </div>
+                    <div style="text-align: right;">
+                        {% if conference.parent_attended %}
+                            <span style="background: #d4edda; color: #155724; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.9rem;">
+                                Parent Attended
+                            </span>
+                        {% else %}
+                            <span style="background: #f8d7da; color: #721c24; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.9rem;">
+                                Parent Absent
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <strong style="color: #2c3e50;">Progress Notes:</strong>
+                        <p style="margin-top: 0.5rem; line-height: 1.5;">{{ conference.progress_notes }}</p>
+                    </div>
+                    <div>
+                        <strong style="color: #27ae60;">Goals Met:</strong>
+                        <p style="margin-top: 0.5rem; line-height: 1.5;">{{ conference.goals_met }}</p>
+                    </div>
+                    <div>
+                        <strong style="color: #3498db;">New Goals:</strong>
+                        <p style="margin-top: 0.5rem; line-height: 1.5;">{{ conference.new_goals }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 3rem; color: #7f8c8d;">
+            <h3>No Case Conferences Yet</h3>
+            <p>No case conferences have been documented for this student.</p>
+            {% if user.teacher and student.assigned_teacher == user.teacher %}
+                <a href="{% url 'create_conference' student.id %}" class="btn btn-success" style="margin-top: 1rem;">
+                    Create First Conference
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+<div style="text-align: center; margin-top: 2rem;">
+    {% if user.is_superuser %}
+        <a href="{% url 'student_list' %}" class="btn btn-primary">← Back to Student List</a>
+    {% elif user.teacher %}
+        <a href="{% url 'teacher_dashboard' %}" class="btn btn-primary">← Back to Dashboard</a>
+    {% elif user.parent %}
+        <a href="{% url 'parent_dashboard' %}" class="btn btn-primary">← Back to Dashboard</a>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'student_records/base.html' %}
+
+{% block title %}Login - SERMS{% endblock %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 4rem auto;">
+    <div class="card">
+        <div class="card-header" style="text-align: center;">
+            <h2 class="card-title">System Login</h2>
+            <p style="color: #7f8c8d; margin-top: 0.5rem;">Access your SERMS account</p>
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
+                Login to System
+            </button>
+        </form>
+        
+        <div style="text-align: center;">
+            <a href="{% url 'home' %}" style="color: #7f8c8d; text-decoration: none;">
+                ← Back to Home
+            </a>
+        </div>
+    </div>
+    
+    <div style="background: white; border-radius: 10px; padding: 1.5rem; margin-top: 1rem; text-align: center;">
+        <h4 style="color: #2c3e50; margin-bottom: 1rem;">Access Levels</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; font-size: 0.9rem;">
+            <div>
+                <strong style="color: #e74c3c;">Admin</strong><br>
+                Full System Access
+            </div>
+            <div>
+                <strong style="color: #3498db;">Teacher</strong><br>
+                Student Management
+            </div>
+            <div>
+                <strong style="color: #27ae60;">Parent</strong><br>
+                Progress Viewing
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

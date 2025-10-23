@@ -1,0 +1,150 @@
+{% extends 'student_records/base.html' %}
+
+{% block title %}Add New Student - SERMS{% endblock %}
+
+{% block content %}
+<div class="card" style="background: linear-gradient(135deg, #ffecd2, #fcb69f); border: none; box-shadow: 0 15px 35px rgba(0,0,0,0.1);">
+    <div class="card-header" style="text-align: center; border-bottom: 3px solid #e17055;">
+        <h1 class="card-title" style="color: #d63031; font-size: 2rem;">➕ Add New Student</h1>
+        <p style="color: #636e72; font-size: 1.1rem;">Enter student information to create a new record</p>
+    </div>
+    
+    <form method="post" style="background: white; padding: 2rem; border-radius: 15px; margin-top: 1rem;">
+        {% csrf_token %}
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+            <div class="form-group">
+                <label for="full_name" style="color: #2d3436; font-weight: bold; font-size: 1.1rem;">👤 Full Name *</label>
+                <input type="text" id="full_name" name="full_name" class="form-control" 
+                       style="border: 2px solid #74b9ff; border-radius: 10px; padding: 1rem; font-size: 1rem;" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="admission_number" style="color: #2d3436; font-weight: bold; font-size: 1.1rem;">🆔 Student ID (Numbers Only) *</label>
+                <input type="number" id="admission_number" name="admission_number" class="form-control" 
+                       style="border: 2px solid #74b9ff; border-radius: 10px; padding: 1rem; font-size: 1rem;" 
+                       placeholder="e.g. 11927" min="10000" max="99999" required>
+                <small style="color: #7f8c8d;">Enter 5-digit number (10000-99999)</small>
+            </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+            <div class="form-group">
+                <label for="age" style="color: #2d3436; font-weight: bold; font-size: 1.1rem;">🎂 Age *</label>
+                <input type="number" id="age" name="age" class="form-control" min="3" max="18" 
+                       style="border: 2px solid #55efc4; border-radius: 10px; padding: 1rem; font-size: 1rem;" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="grade" style="color: #2d3436; font-weight: bold; font-size: 1.1rem;">📚 Grade Level *</label>
+                <select id="grade" name="grade" class="form-control" 
+                        style="border: 2px solid #55efc4; border-radius: 10px; padding: 1rem; font-size: 1rem;" required>
+                    <option value="">Select Grade</option>
+                    <option value="Pre-K">Pre-K</option>
+                    <option value="Kindergarten">Kindergarten</option>
+                    <option value="1st Grade">1st Grade</option>
+                    <option value="2nd Grade">2nd Grade</option>
+                    <option value="3rd Grade">3rd Grade</option>
+                    <option value="4th Grade">4th Grade</option>
+                    <option value="5th Grade">5th Grade</option>
+                </select>
+            </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+            <div class="form-group">
+                <label for="parent_name" style="color: #2d3436; font-weight: bold; font-size: 1.1rem;">👨👩👧👦 Parent/Guardian Name *</label>
+                <input type="text" id="parent_name" name="parent_name" class="form-control" 
+                       style="border: 2px solid #fd79a8; border-radius: 10px; padding: 1rem; font-size: 1rem;" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="parent_contact" style="color: #2d3436; font-weight: bold; font-size: 1.1rem;">📞 Parent Contact *</label>
+                <div style="display: flex; gap: 0.5rem;">
+                    <select name="country_code" style="border: 2px solid #fd79a8; border-radius: 10px; padding: 1rem; font-size: 1rem; width: 120px;" required>
+                        <option value="+1">🇺🇸 +1</option>
+                        <option value="+44">🇬🇧 +44</option>
+                        <option value="+33">🇫🇷 +33</option>
+                        <option value="+49">🇩🇪 +49</option>
+                        <option value="+81">🇯🇵 +81</option>
+                        <option value="+86">🇨🇳 +86</option>
+                        <option value="+91">🇮🇳 +91</option>
+                        <option value="+61">🇦🇺 +61</option>
+                        <option value="+55">🇧🇷 +55</option>
+                        <option value="+27">🇿🇦 +27</option>
+                        <option value="+234">🇳🇬 +234</option>
+                        <option value="+254">🇰🇪 +254</option>
+                    </select>
+                    <input type="tel" id="parent_contact" name="parent_contact" class="form-control" 
+                           style="border: 2px solid #fd79a8; border-radius: 10px; padding: 1rem; font-size: 1rem; flex: 1;" 
+                           placeholder="Enter phone number" required>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Special Needs Section -->
+        <div style="background: #f8f9ff; padding: 2rem; border-radius: 15px; border: 2px solid #a29bfe; margin-bottom: 2rem;">
+            <h3 style="color: #6c5ce7; margin-bottom: 1rem;">🏥 Special Education Needs</h3>
+            
+            <div class="form-group" style="margin-bottom: 1.5rem;">
+                <p style="font-weight: bold; color: #2d3436; margin-bottom: 1rem;">Does this student have special education needs?</p>
+                <div style="display: flex; gap: 2rem;">
+                    <label style="display: flex; align-items: center; font-size: 1.1rem; color: #2d3436; cursor: pointer;">
+                        <input type="radio" name="has_special_needs" value="yes" 
+                               style="width: 18px; height: 18px; margin-right: 0.5rem; accent-color: #e74c3c;"
+                               onchange="showSpecialNeedsDescription()">
+                        <span style="background: #fecaca; color: #dc2626; padding: 0.5rem 1rem; border-radius: 15px; font-weight: 600;">✓ YES</span>
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 1.1rem; color: #2d3436; cursor: pointer;">
+                        <input type="radio" name="has_special_needs" value="no" 
+                               style="width: 18px; height: 18px; margin-right: 0.5rem; accent-color: #27ae60;"
+                               onchange="hideSpecialNeedsDescription()">
+                        <span style="background: #d1fae5; color: #059669; padding: 0.5rem 1rem; border-radius: 15px; font-weight: 600;">✗ NO</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div id="special_needs_description_section" style="display: none;">
+                <div class="form-group">
+                    <label for="special_needs_description" style="color: #2d3436; font-weight: bold; font-size: 1rem;">📝 Describe Special Needs:</label>
+                    <textarea id="special_needs_description" name="special_needs_description" class="form-control" rows="4" 
+                              style="border: 2px solid #a29bfe; border-radius: 10px; padding: 1rem; font-size: 1rem;"
+                              placeholder="Describe the student's special education needs, disabilities, or areas requiring support..."></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+            <button type="submit" class="btn" 
+                    style="background: linear-gradient(135deg, #55efc4, #00b894); color: white; padding: 1rem 3rem; border-radius: 25px; font-size: 1.1rem; font-weight: bold; border: none; cursor: pointer; box-shadow: 0 8px 15px rgba(85,239,196,0.3); transition: all 0.3s ease;"
+                    onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 25px rgba(85,239,196,0.4)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 15px rgba(85,239,196,0.3)'">
+                ✅ Add Student
+            </button>
+            <a href="{% url 'teacher_dashboard' %}" class="btn" 
+               style="background: linear-gradient(135deg, #636e72, #2d3436); color: white; padding: 1rem 3rem; border-radius: 25px; font-size: 1.1rem; font-weight: bold; text-decoration: none; box-shadow: 0 8px 15px rgba(45,52,54,0.3); transition: all 0.3s ease;"
+               onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 25px rgba(45,52,54,0.4)'"
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 15px rgba(45,52,54,0.3)'">
+                ❌ Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+function showSpecialNeedsDescription() {
+    const section = document.getElementById('special_needs_description_section');
+    const textarea = document.getElementById('special_needs_description');
+    section.style.display = 'block';
+    textarea.required = true;
+}
+
+function hideSpecialNeedsDescription() {
+    const section = document.getElementById('special_needs_description_section');
+    const textarea = document.getElementById('special_needs_description');
+    section.style.display = 'none';
+    textarea.required = false;
+    textarea.value = '';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: serms
+    env: python
+    buildCommand: "pip install -r requirements.txt && python manage.py migrate && python manage.py setup_production && python manage.py collectstatic --noinput"
+    startCommand: "gunicorn SERMS.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.16

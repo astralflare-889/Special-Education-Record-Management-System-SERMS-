@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -138,4 +139,4 @@ import os
 ALLOWED_HOSTS = ['special-education-record-management.vercel.app', 'localhost', '127.0.0.1', '.vercel.app', 'testserver']
 
 # For production
-DEBUG = True
+DEBUG = False

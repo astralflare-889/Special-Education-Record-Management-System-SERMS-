@@ -41,12 +41,6 @@ def admin_login(request):
     return render(request, 'student_records/admin_login.html')
 
 def teacher_login(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        # Hardcoded login for Vercel
-        if username == 'teacher1' and password == 'teacher123':
-            return redirect('teacher_dashboard')
     return render(request, 'student_records/teacher_login.html')
 
 def parent_login(request):

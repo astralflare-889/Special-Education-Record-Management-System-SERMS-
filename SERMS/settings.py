@@ -87,7 +87,7 @@ import dj_database_url
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
+        'NAME': '/tmp/db.sqlite3',
     }
 }
 

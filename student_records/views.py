@@ -44,9 +44,11 @@ def teacher_login(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user and hasattr(user, 'teacher'):
-            login(request, user)
+        # Hardcoded login for Vercel
+        if username == 'teacher1' and password == 'teacher123':
+            # Create session without database
+            request.session['user_type'] = 'teacher'
+            request.session['username'] = username
             return redirect('teacher_dashboard')
         messages.error(request, 'Invalid teacher credentials')
     return render(request, 'student_records/teacher_login.html')

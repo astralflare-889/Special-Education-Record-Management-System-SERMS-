@@ -16,17 +16,14 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-su)*%4g+-u4o31r_nj#!rcpjd!+(1!7o4ybpxlm_(go1-y+avk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Add your Vercel domain to ALLOWED_HOSTS
+ALLOWED_HOSTS = ['special-education-record-management.vercel.app', 'localhost', '127.0.0.1', '.vercel.app', 'testserver']
 
 
 # Application definition
@@ -55,10 +52,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'SERMS.urls'
 
-from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -81,8 +74,6 @@ WSGI_APPLICATION = 'SERMS.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-import dj_database_url
 
 DATABASES = {
     'default': {
@@ -134,11 +125,3 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-import os
-
-# Add your Vercel domain to ALLOWED_HOSTS
-ALLOWED_HOSTS = ['special-education-record-management.vercel.app', 'localhost', '127.0.0.1', '.vercel.app', 'testserver']
-
-# For production
-DEBUG = True

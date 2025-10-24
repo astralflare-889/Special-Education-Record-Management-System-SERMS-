@@ -41,6 +41,14 @@ def admin_login(request):
     return render(request, 'student_records/admin_login.html')
 
 def teacher_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user and hasattr(user, 'teacher'):
+            login(request, user)
+            return redirect('teacher_dashboard')
+        messages.error(request, 'Invalid teacher credentials')
     return render(request, 'student_records/teacher_login.html')
 
 def parent_login(request):
@@ -190,16 +198,16 @@ def admin_dashboard(request):
     })
 
 # Teacher Dashboard - Add students, fill forms, create reports
+@login_required
+@user_passes_test(is_teacher)
 def teacher_dashboard(request):
-    # Demo data for Vercel
-    demo_students = [
-        {'full_name': 'John Doe', 'admission_number': '12345', 'age': 5, 'grade': 'K', 'special_needs': 'Speech therapy'},
-        {'full_name': 'Jane Smith', 'admission_number': '12346', 'age': 6, 'grade': '1st', 'special_needs': 'Reading support'},
-    ]
+    teacher = request.user.teacher
+    students = Student.objects.filter(assigned_teacher=teacher).order_by('admission_number')
+    recent_conferences = CaseConference.objects.filter(teacher=teacher).order_by('-created_at')[:5]
     
     return render(request, 'student_records/teacher_dashboard.html', {
-        'students': demo_students,
-        'recent_conferences': []
+        'students': students,
+        'recent_conferences': recent_conferences
     })
 
 # Parent Dashboard - Search and view their children

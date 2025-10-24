@@ -116,7 +116,8 @@
             {% endfor %}
         {% endif %}
         
-        <form onsubmit="return checkLogin()">
+        <form method="post">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" class="form-control" required>
@@ -129,19 +130,6 @@
             
             <button type="submit" class="login-btn">Login as Teacher</button>
         </form>
-        
-        <script>
-        function checkLogin() {
-            var username = document.getElementById('username').value;
-            var password = document.getElementById('password').value;
-            if (username === 'teacher1' && password === 'teacher123') {
-                window.location.href = '/teacher/';
-                return false;
-            }
-            alert('Invalid credentials. Use: teacher1 / teacher123');
-            return false;
-        }
-        </script>
         
         <div style="text-align: center; margin-top: 1rem;">
             <p style="color: #7f8c8d;">Don't have an account? <a href="{% url 'teacher_signup' %}" style="color: #3498db;">Sign up here</a></p>

@@ -196,16 +196,16 @@ def admin_dashboard(request):
     })
 
 # Teacher Dashboard - Add students, fill forms, create reports
-@login_required
-@user_passes_test(is_teacher)
 def teacher_dashboard(request):
-    teacher = request.user.teacher
-    students = Student.objects.filter(assigned_teacher=teacher).order_by('admission_number')
-    recent_conferences = CaseConference.objects.filter(teacher=teacher).order_by('-created_at')[:5]
+    # Demo data for Vercel
+    demo_students = [
+        {'full_name': 'John Doe', 'admission_number': '12345', 'age': 5, 'grade': 'K', 'special_needs': 'Speech therapy'},
+        {'full_name': 'Jane Smith', 'admission_number': '12346', 'age': 6, 'grade': '1st', 'special_needs': 'Reading support'},
+    ]
     
     return render(request, 'student_records/teacher_dashboard.html', {
-        'students': students,
-        'recent_conferences': recent_conferences
+        'students': demo_students,
+        'recent_conferences': []
     })
 
 # Parent Dashboard - Search and view their children

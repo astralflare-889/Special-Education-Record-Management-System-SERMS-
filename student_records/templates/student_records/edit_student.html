@@ -19,9 +19,11 @@
             </div>
             
             <div class="form-group">
-                <label for="admission_number">Student ID</label>
-                <input type="text" class="form-control" value="{{ student.admission_number }}" disabled>
-                <small style="color: #7f8c8d;">Student ID cannot be changed</small>
+                <label for="admission_number" style="color: #2d3436; font-weight: bold;">Student ID (Numbers Only) *</label>
+                <input type="number" id="admission_number" name="admission_number" class="form-control" 
+                       value="{{ student.admission_number }}" min="10000" max="99999" 
+                       style="border: 2px solid #74b9ff; border-radius: 10px; padding: 1rem;" required>
+                <small style="color: #7f8c8d;">Enter 5-digit number (10000-99999)</small>
             </div>
         </div>
         

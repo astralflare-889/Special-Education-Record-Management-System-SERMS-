@@ -222,7 +222,7 @@
             <nav class="nav-menu">
                 {% if user.is_authenticated %}
                     {% if user.is_superuser %}
-                        <a href="{% url 'student_list' %}">Manage Students</a>
+                        <a href="{% url 'manage_students' %}">Manage Students</a>
                         <a href="/admin/">Admin Panel</a>
                     {% elif user.teacher %}
                         <a href="{% url 'teacher_dashboard' %}">My Students</a>
@@ -232,7 +232,7 @@
                     <div class="user-info">{{ user.first_name }} {{ user.last_name }}</div>
                     <a href="{% url 'logout' %}">Logout</a>
                 {% else %}
-                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'home' %}">Login</a>
                 {% endif %}
             </nav>
         </div>

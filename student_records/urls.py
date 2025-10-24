@@ -27,6 +27,7 @@ urlpatterns = [
     # Student details and conferences
     path('student/<int:student_id>/', views.student_detail, name='student_detail'),
     path('student/<int:student_id>/conference/', views.create_conference, name='create_conference'),
+    path('conference/<int:conference_id>/edit/', views.edit_conference, name='edit_conference'),
     
     # Admin management
     path('admin/students/', views.manage_students, name='manage_students'),

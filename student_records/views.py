@@ -233,7 +233,7 @@ def add_student(request):
         
         student = Student.objects.create(
             full_name=request.POST['full_name'],
-            admission_number=request.POST['admission_number'],
+            admission_number=int(request.POST['admission_number']),
             age=request.POST['age'],
             grade=request.POST['grade'],
             parent_name=request.POST['parent_name'],
@@ -257,6 +257,7 @@ def edit_student(request, student_id):
     
     if request.method == 'POST':
         student.full_name = request.POST['full_name']
+        student.admission_number = int(request.POST['admission_number'])
         student.age = request.POST['age']
         student.grade = request.POST['grade']
         student.parent_name = request.POST['parent_name']
@@ -319,6 +320,29 @@ def create_conference(request, student_id):
         return redirect('student_detail', student_id=student.id)
     return render(request, 'student_records/create_conference.html', {'student': student})
 
+# Edit case conference for teachers
+@login_required
+@user_passes_test(is_teacher)
+def edit_conference(request, conference_id):
+    conference = get_object_or_404(CaseConference, id=conference_id)
+    teacher = request.user.teacher
+    
+    if conference.teacher != teacher:
+        messages.error(request, 'You can only edit your own conferences')
+        return redirect('teacher_dashboard')
+    
+    if request.method == 'POST':
+        conference.conference_date = request.POST['conference_date']
+        conference.progress_notes = request.POST['progress_notes']
+        conference.goals_met = request.POST['goals_met']
+        conference.new_goals = request.POST['new_goals']
+        conference.parent_attended = request.POST.get('parent_attended') == 'on'
+        conference.save()
+        messages.success(request, 'Case conference updated successfully!')
+        return redirect('student_detail', student_id=conference.student.id)
+    
+    return render(request, 'student_records/edit_conference.html', {'conference': conference})
+
 # Report generation for teachers
 @login_required
 @user_passes_test(is_teacher)
@@ -355,7 +379,7 @@ def admin_add_student(request):
         
         student = Student.objects.create(
             full_name=request.POST['full_name'],
-            admission_number=request.POST['admission_number'],
+            admission_number=int(request.POST['admission_number']),
             age=request.POST['age'],
             grade=request.POST['grade'],
             parent_name=request.POST['parent_name'],

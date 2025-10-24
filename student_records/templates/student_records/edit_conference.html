@@ -1,0 +1,112 @@
+{% extends 'student_records/base.html' %}
+
+{% block title %}Edit Case Conference - SERMS{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1 class="card-title">✏️ Edit Case Conference</h1>
+        <p style="color: #7f8c8d;">Student: <strong>{{ conference.student.full_name }}</strong> (ID: {{ conference.student.admission_number }})</p>
+    </div>
+    
+    <form method="post" style="max-width: 800px;">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="conference_date" style="color: #2c3e50; font-weight: 600;">📅 Conference Date:</label>
+            <input type="date" 
+                   id="conference_date" 
+                   name="conference_date" 
+                   class="form-control" 
+                   value="{{ conference.conference_date|date:'Y-m-d' }}"
+                   required
+                   style="border: 2px solid #ddd; border-radius: 8px; padding: 0.8rem;">
+        </div>
+        
+        <div class="form-group">
+            <label for="progress_notes" style="color: #2c3e50; font-weight: 600;">📝 Progress Notes:</label>
+            <textarea id="progress_notes" 
+                      name="progress_notes" 
+                      class="form-control" 
+                      rows="6" 
+                      required
+                      placeholder="Document student's progress, achievements, and areas of improvement..."
+                      style="border: 2px solid #ddd; border-radius: 8px; padding: 0.8rem; resize: vertical;">{{ conference.progress_notes }}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="goals_met" style="color: #2c3e50; font-weight: 600;">🎯 Goals Met:</label>
+            <textarea id="goals_met" 
+                      name="goals_met" 
+                      class="form-control" 
+                      rows="4" 
+                      required
+                      placeholder="List the goals that have been achieved..."
+                      style="border: 2px solid #ddd; border-radius: 8px; padding: 0.8rem; resize: vertical;">{{ conference.goals_met }}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="new_goals" style="color: #2c3e50; font-weight: 600;">🚀 New Goals:</label>
+            <textarea id="new_goals" 
+                      name="new_goals" 
+                      class="form-control" 
+                      rows="4" 
+                      required
+                      placeholder="Set new goals for the student's continued development..."
+                      style="border: 2px solid #ddd; border-radius: 8px; padding: 0.8rem; resize: vertical;">{{ conference.new_goals }}</textarea>
+        </div>
+        
+        <div class="form-group">
+            <label style="color: #2c3e50; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                <input type="checkbox" 
+                       name="parent_attended" 
+                       {% if conference.parent_attended %}checked{% endif %}
+                       style="transform: scale(1.2);">
+                👨‍👩‍👧‍👦 Parent/Guardian Attended Conference
+            </label>
+        </div>
+        
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button type="submit" 
+                    class="btn" 
+                    style="background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; padding: 1rem 2rem; border-radius: 25px; border: none; font-weight: 600; cursor: pointer; box-shadow: 0 8px 15px rgba(46,204,113,0.3); transition: all 0.3s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 20px rgba(46,204,113,0.4)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 15px rgba(46,204,113,0.3)'">
+                💾 Update Conference
+            </button>
+            
+            <a href="{% url 'teacher_dashboard' %}" 
+               class="btn" 
+               style="background: linear-gradient(135deg, #3498db, #2980b9); color: white; padding: 1rem 2rem; border-radius: 25px; text-decoration: none; font-weight: 600; box-shadow: 0 8px 15px rgba(52,152,219,0.3); transition: all 0.3s ease;"
+               onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 20px rgba(52,152,219,0.4)'"
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 15px rgba(52,152,219,0.3)'">
+                🏠 Back to Dashboard
+            </a>
+            <a href="{% url 'student_detail' conference.student.id %}" 
+               class="btn" 
+               style="background: linear-gradient(135deg, #95a5a6, #7f8c8d); color: white; padding: 1rem 2rem; border-radius: 25px; text-decoration: none; font-weight: 600; box-shadow: 0 8px 15px rgba(149,165,166,0.3); transition: all 0.3s ease;"
+               onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 20px rgba(149,165,166,0.4)'"
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 15px rgba(149,165,166,0.3)'">
+                🔙 Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<style>
+.form-control:focus {
+    border-color: #3498db !important;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1) !important;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+</style>
+{% endblock %}

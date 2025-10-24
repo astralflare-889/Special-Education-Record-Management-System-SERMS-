@@ -67,7 +67,14 @@
                 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
                     <div>
                         <h4 style="color: #2c3e50;">Conference - {{ conference.conference_date|date:"F d, Y" }}</h4>
-                        <p style="color: #7f8c8d;">Conducted by: {{ conference.teacher }}</p>
+                        <p style="color: #7f8c8d;">Conducted by: {{ conference.teacher }}
+                            {% if user.teacher and conference.teacher == user.teacher %}
+                                <a href="{% url 'edit_conference' conference.id %}" 
+                                   style="background: linear-gradient(135deg, #fdcb6e, #e17055); color: white; padding: 0.3rem 0.6rem; border-radius: 12px; text-decoration: none; font-size: 0.75rem; font-weight: 600; margin-left: 0.5rem; box-shadow: 0 3px 6px rgba(253,203,110,0.3);">
+                                    ✏️ Edit
+                                </a>
+                            {% endif %}
+                        </p>
                     </div>
                     <div style="text-align: right;">
                         {% if conference.parent_attended %}
@@ -114,11 +121,11 @@
 
 <div style="text-align: center; margin-top: 2rem;">
     {% if user.is_superuser %}
-        <a href="{% url 'student_list' %}" class="btn btn-primary">← Back to Student List</a>
+        <a href="{% url 'manage_students' %}" class="btn" style="background: #3498db; color: white; padding: 1rem 2rem; border-radius: 25px; text-decoration: none;">🏠 Back to Admin Dashboard</a>
     {% elif user.teacher %}
-        <a href="{% url 'teacher_dashboard' %}" class="btn btn-primary">← Back to Dashboard</a>
+        <a href="{% url 'teacher_dashboard' %}" class="btn" style="background: #3498db; color: white; padding: 1rem 2rem; border-radius: 25px; text-decoration: none;">🏠 Back to Dashboard</a>
     {% elif user.parent %}
-        <a href="{% url 'parent_dashboard' %}" class="btn btn-primary">← Back to Dashboard</a>
+        <a href="{% url 'parent_dashboard' %}" class="btn" style="background: #3498db; color: white; padding: 1rem 2rem; border-radius: 25px; text-decoration: none;">🏠 Back to Dashboard</a>
     {% endif %}
 </div>
 {% endblock %}

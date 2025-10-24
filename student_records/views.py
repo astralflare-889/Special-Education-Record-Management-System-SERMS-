@@ -16,6 +16,16 @@ def is_parent(user):
     return hasattr(user, 'parent')
 
 def home(request):
+    # Initialize database on first visit
+    from django.core.management import execute_from_command_line
+    import sys
+    try:
+        from django.contrib.auth.models import User
+        if not User.objects.exists():
+            execute_from_command_line(['manage.py', 'migrate'])
+            execute_from_command_line(['manage.py', 'setup_production'])
+    except:
+        pass
     return render(request, 'student_records/home.html')
 
 # Separate login views for each role

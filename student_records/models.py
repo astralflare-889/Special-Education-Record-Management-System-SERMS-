@@ -18,10 +18,17 @@ class Parent(models.Model):
         return f"{self.user.first_name} {self.user.last_name}"
 
 class Student(models.Model):
+    GRADE_CHOICES = [
+        ('Pre-K', 'Pre-Kindergarten (3-4 years)'),
+        ('K', 'Kindergarten (4-5 years)'),
+        ('Toddler', 'Toddler (2-3 years)'),
+        ('Infant', 'Infant (0-2 years)'),
+    ]
+    
     full_name = models.CharField(max_length=100)
     admission_number = models.CharField(max_length=20, unique=True)
     age = models.PositiveIntegerField()
-    grade = models.CharField(max_length=10)
+    grade = models.CharField(max_length=10, choices=GRADE_CHOICES)
     parent = models.ForeignKey(Parent, on_delete=models.SET_NULL, null=True, blank=True)
     parent_name = models.CharField(max_length=100)
     parent_contact = models.CharField(max_length=15)

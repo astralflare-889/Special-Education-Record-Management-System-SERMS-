@@ -30,19 +30,16 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
             <div class="form-group">
                 <label for="age">Age *</label>
-                <input type="number" id="age" name="age" class="form-control" value="{{ student.age }}" min="3" max="18" required>
+                <input type="number" id="age" name="age" class="form-control" value="{{ student.age }}" min="2" max="6" required>
             </div>
             
             <div class="form-group">
                 <label for="grade">Grade Level *</label>
                 <select id="grade" name="grade" class="form-control" required>
-                    <option value="Pre-K" {% if student.grade == "Pre-K" %}selected{% endif %}>Pre-K</option>
-                    <option value="Kindergarten" {% if student.grade == "Kindergarten" %}selected{% endif %}>Kindergarten</option>
-                    <option value="1st Grade" {% if student.grade == "1st Grade" %}selected{% endif %}>1st Grade</option>
-                    <option value="2nd Grade" {% if student.grade == "2nd Grade" %}selected{% endif %}>2nd Grade</option>
-                    <option value="3rd Grade" {% if student.grade == "3rd Grade" %}selected{% endif %}>3rd Grade</option>
-                    <option value="4th Grade" {% if student.grade == "4th Grade" %}selected{% endif %}>4th Grade</option>
-                    <option value="5th Grade" {% if student.grade == "5th Grade" %}selected{% endif %}>5th Grade</option>
+                    <option value="Playgroup" {% if student.grade == "Playgroup" %}selected{% endif %}>Playgroup / Pre-Nursery</option>
+                    <option value="Nursery" {% if student.grade == "Nursery" %}selected{% endif %}>Nursery</option>
+                    <option value="PP1" {% if student.grade == "PP1" %}selected{% endif %}>Pre-Primary 1 (KG1)</option>
+                    <option value="PP2" {% if student.grade == "PP2" %}selected{% endif %}>Pre-Primary 2 (KG2)</option>
                 </select>
             </div>
         </div>

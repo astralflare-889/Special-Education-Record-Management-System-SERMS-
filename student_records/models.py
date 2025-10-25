@@ -19,10 +19,10 @@ class Parent(models.Model):
 
 class Student(models.Model):
     GRADE_CHOICES = [
-        ('Pre-K', 'Pre-Kindergarten (3-4 years)'),
-        ('K', 'Kindergarten (4-5 years)'),
-        ('Toddler', 'Toddler (2-3 years)'),
-        ('Infant', 'Infant (0-2 years)'),
+        ('Playgroup', 'Playgroup / Pre-Nursery'),
+        ('Nursery', 'Nursery'),
+        ('PP1', 'Pre-Primary 1 (KG1)'),
+        ('PP2', 'Pre-Primary 2 (KG2)'),
     ]
     
     full_name = models.CharField(max_length=100)

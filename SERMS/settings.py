@@ -23,7 +23,7 @@ SECRET_KEY = 'django-insecure-su)*%4g+-u4o31r_nj#!rcpjd!+(1!7o4ybpxlm_(go1-y+avk
 DEBUG = True
 
 # Add deployment domains to ALLOWED_HOSTS
-ALLOWED_HOSTS = ['serms-production.up.railway.app', '.railway.app', 'special-education-record-management.vercel.app', 'localhost', '127.0.0.1', '.vercel.app', 'testserver']
+ALLOWED_HOSTS = ['serms-production-fc5c.up.railway.app', 'serms-production.up.railway.app', '.railway.app', 'special-education-record-management.vercel.app', 'localhost', '127.0.0.1', '.vercel.app', 'testserver']
 
 
 # Application definition
@@ -123,3 +123,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CSRF Settings for deployment
+CSRF_TRUSTED_ORIGINS = [
+    'https://serms-production-fc5c.up.railway.app',
+    'https://serms-production.up.railway.app',
+    'https://*.railway.app',
+]

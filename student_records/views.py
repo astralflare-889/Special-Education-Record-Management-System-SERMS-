@@ -17,13 +17,36 @@ def is_parent(user):
 
 def home(request):
     # Initialize database on first visit
-    from django.core.management import execute_from_command_line
-    import sys
     try:
         from django.contrib.auth.models import User
-        if not User.objects.exists():
-            execute_from_command_line(['manage.py', 'migrate'])
-            execute_from_command_line(['manage.py', 'setup_production'])
+        from student_records.models import Teacher, Parent
+        
+        # Create admin user if none exists
+        if not User.objects.filter(is_superuser=True).exists():
+            User.objects.create_user(
+                username='admin',
+                password='admin123',
+                first_name='System',
+                last_name='Administrator',
+                email='admin@serms.com',
+                is_superuser=True,
+                is_staff=True
+            )
+        
+        # Create teacher user if none exists
+        if not User.objects.filter(username='teacher1').exists():
+            teacher_user = User.objects.create_user(
+                username='teacher1',
+                password='teacher123',
+                first_name='Sarah',
+                last_name='Johnson',
+                email='sarah@serms.com'
+            )
+            Teacher.objects.create(
+                user=teacher_user,
+                employee_id='T001',
+                phone='+1 555-0123'
+            )
     except:
         pass
     return render(request, 'student_records/home.html')

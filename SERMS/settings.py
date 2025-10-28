@@ -22,8 +22,8 @@ SECRET_KEY = 'django-insecure-su)*%4g+-u4o31r_nj#!rcpjd!+(1!7o4ybpxlm_(go1-y+avk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# Add your Vercel domain to ALLOWED_HOSTS
-ALLOWED_HOSTS = ['special-education-record-management.vercel.app', 'localhost', '127.0.0.1', '.vercel.app', 'testserver']
+# Add deployment domains to ALLOWED_HOSTS
+ALLOWED_HOSTS = ['serms-production.up.railway.app', '.railway.app', 'special-education-record-management.vercel.app', 'localhost', '127.0.0.1', '.vercel.app', 'testserver']
 
 
 # Application definition

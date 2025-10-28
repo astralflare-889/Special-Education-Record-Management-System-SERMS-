@@ -5,28 +5,28 @@
 {% block content %}
 <div class="card">
     <div class="card-header">
-        <h1 class="card-title">🔐 Administrator Dashboard</h1>
-        <p style="color: #7f8c8d;">Complete system control and management</p>
+        <h1 class="card-title">Administrator Dashboard</h1>
+        <p style="color: #64748b;">Welcome back, {{ user.first_name }} {{ user.last_name }} - Complete system oversight</p>
     </div>
     
     <div class="stats-grid">
-        <div class="stat-card" style="border-left: 4px solid #3498db;">
+        <div class="stat-card" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white;">
             <div class="stat-number">{{ total_students }}</div>
             <div class="stat-label">Total Students</div>
         </div>
-        <div class="stat-card" style="border-left: 4px solid #e74c3c;">
+        <div class="stat-card" style="background: linear-gradient(135deg, #10b981, #059669); color: white;">
             <div class="stat-number">{{ total_teachers }}</div>
             <div class="stat-label">Active Teachers</div>
         </div>
-        <div class="stat-card" style="border-left: 4px solid #27ae60;">
+        <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white;">
             <div class="stat-number">{{ total_parents }}</div>
             <div class="stat-label">Registered Parents</div>
         </div>
-        <div class="stat-card" style="border-left: 4px solid #f39c12;">
+        <div class="stat-card" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white;">
             <div class="stat-number">{{ total_conferences }}</div>
             <div class="stat-label">Total Conferences</div>
         </div>
-        <div class="stat-card" style="border-left: 4px solid #e74c3c;">
+        <div class="stat-card" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white;">
             <div class="stat-number">{{ total_admins }}/2</div>
             <div class="stat-label">System Administrators</div>
         </div>

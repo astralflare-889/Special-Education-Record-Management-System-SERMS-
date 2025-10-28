@@ -56,6 +56,29 @@ def admin_login(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
+        
+        # Hardcoded admin for Railway
+        if username == 'admin' and password == 'admin123':
+            # Create admin user if doesn't exist
+            try:
+                user, created = User.objects.get_or_create(
+                    username='admin',
+                    defaults={
+                        'first_name': 'System',
+                        'last_name': 'Administrator',
+                        'email': 'admin@serms.com',
+                        'is_superuser': True,
+                        'is_staff': True
+                    }
+                )
+                if created:
+                    user.set_password('admin123')
+                    user.save()
+                login(request, user)
+                return redirect('admin_dashboard')
+            except:
+                pass
+        
         user = authenticate(request, username=username, password=password)
         if user and user.is_superuser:
             login(request, user)
